@@ -25,3 +25,15 @@ Given a common tibble of interest, a subset of the data can be identified as
 suspicious and added to the suspect_data structure for analysis and
 visualization.
 }
+\examples{
+df <- create_suspicious_data()
+suspect_data <-
+df \%>\%
+  select(clarity, y) \%>\%
+  add_suspected_columns(reason = "These columns are hinky")
+
+suspect_data <-
+  df \%>\%
+  select(depth) \%>\%
+  add_suspected_columns(reason = "This column is not deep enough", suspect_data)
+}

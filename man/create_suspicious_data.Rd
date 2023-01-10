@@ -4,11 +4,17 @@
 \alias{create_suspicious_data}
 \title{Create sample data for the inquisitive}
 \usage{
-create_suspicious_data()
+create_suspicious_data(seed = set.seed(23))
+}
+\arguments{
+\item{seed}{an integer used to set the random number generator state.}
 }
 \value{
 A tibble.
 }
 \description{
-A function to create a set of data useful for testing and evauating inquisitive tools.
+A function to create a set of data useful for testing and evaluating inquisitive tools.
+}
+\examples{
+create_suspicious_data()
 }

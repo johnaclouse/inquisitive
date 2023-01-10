@@ -34,12 +34,24 @@ suspect_data_constructor <- function() {
 #' @export
 #'
 #' @examples
+#' df <- create_suspicious_data()
+#' suspect_data <-
+#'   df %>%
+#'   filter(cut == "Fair") %>%
+#'   add_suspected_rows(reason = "Cut was not good or better")
+#'
+#' suspect_data <-
+#'   df %>%
+#'   filter(price < 5000) %>%
+#'   add_suspected_rows(reason = "Price was less than 5000", suspect_data)
+#'
+#' suspect_data <-
+#'   df %>%
+#'   filter(table < 57) %>%
+#'   add_suspected_rows(reason = "Table was less than 57", suspect_data)
 add_suspected_rows <- function(x,
                               reason,
                               suspect_data = NULL){
-
-  # missing_elements <- sum(is.na(x))
-  # present_elements <- sum(!is.na(x))
 
   if (is.null(suspect_data)) suspect_data <- suspect_data_constructor()
 
@@ -68,6 +80,16 @@ add_suspected_rows <- function(x,
 #' @export
 #'
 #' @examples
+#' df <- create_suspicious_data()
+#' suspect_data <-
+#' df %>%
+#'   select(clarity, y) %>%
+#'   add_suspected_columns(reason = "These columns are hinky")
+#'
+#' suspect_data <-
+#'   df %>%
+#'   select(depth) %>%
+#'   add_suspected_columns(reason = "This column is not deep enough", suspect_data)
 add_suspected_columns <- function(x,
                                  reason,
                                  suspect_data = NULL){
