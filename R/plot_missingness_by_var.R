@@ -30,6 +30,14 @@ plot_missingness_by_var <- function(ds,
                                     date_format_fun = function(x) {format(x, "%Y-%m")}) {
   . <- column <- row_identifier <- name <- value <- x_axis_label <- NULL
 
+  column_order <-
+    purrr::map_df(ds, ~ sum(is.na(.))) %>%
+    tidyr::pivot_longer(cols = everything(),
+                        names_to = "column",
+                        values_to = "count") %>%
+    arrange(count) %>%
+    pull(column)
+
   ds <- as_lith_tbl(ds, {{reference_column}})
 
   subject_label <- (rlang::enexpr(reference_column))
@@ -41,7 +49,7 @@ plot_missingness_by_var <- function(ds,
     mutate(
       row_identifier = row_number(),
       x_axis_label = reference_column
-      )
+    )
 
   x_axis_labels <-
     ds %>%
@@ -54,14 +62,13 @@ plot_missingness_by_var <- function(ds,
   if (inherits(ds$x_axis_label, "Date"))
     x_axis_labels$x_axis_label <- date_format_fun(x_axis_labels$x_axis_label)
 
-
-  column_order <-
-    purrr::map_df(ds, ~ sum(is.na(.))) %>%
-    tidyr::pivot_longer(cols = everything(),
-                        names_to = "column",
-                        values_to = "count") %>%
-    arrange(count) %>%
-    pull(column)
+  # column_order <-
+  #   purrr::map_df(ds, ~ sum(is.na(.))) %>%
+  #   tidyr::pivot_longer(cols = everything(),
+  #                       names_to = "column",
+  #                       values_to = "count") %>%
+  #   arrange(count) %>%
+  #   pull(column)
 
   plot_data <-
     ds %>%
