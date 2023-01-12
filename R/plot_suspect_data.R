@@ -4,6 +4,8 @@ adjudicate_suspect_data <- function(ds, suspect_data){
   # count new rows and columns
   # determine percentage
 
+  type <- data <- NULL
+
   original_data <- ds
   original_dim <- dim(ds)
   original_na_count <- sum(is.na(ds))
@@ -35,17 +37,19 @@ adjudicate_suspect_data <- function(ds, suspect_data){
     ds %>%
     select(-any_of(excluded_columns))
 
+  adjudicated_dim = dim(ds)
+
   list(
     original_data = original_data,
     adjudicated_data = ds,
     original_dim = original_dim,
     original_na_count = original_na_count,
     original_present_count = original_present_count,
-    adjudicated_dim = dim(ds),
+    adjudicated_dim = adjudicated_dim,
     adjudicated_na_count = sum(is.na(ds)),
     adjudicated_present_count = sum(!is.na(ds)),
-    adjudicated_pct = processed_dim / original_dim,
-    adjudicated_diff = original_dim - processed_dim
+    adjudicated_pct = adjudicated_dim / original_dim,
+    adjudicated_diff = original_dim - adjudicated_dim
   )
 }
 original_data <- create_suspicious_data()
@@ -79,6 +83,10 @@ adjudicated_data <- adjudicate_suspect_data(original_data, suspect_data)
 
 
 plot_suspect_rows <- function(suspect_data) {
+
+  type <- data <- row_count <- missing_elements <- present_elements <- NULL
+  reason <- present <- rows <- missingness <-
+
   axis_expansion <- 2
 
   suspect_row_plot_data <-
@@ -95,8 +103,7 @@ plot_suspect_rows <- function(suspect_data) {
     ungroup() %>%
     select(-data) %>%
     mutate(reason = forcats::fct_reorder(reason, row_count, .desc = F)) %>%
-    arrange(desc(row_count)) %>%
-    slice_head(n = max_number_of_rows_to_plot)
+    arrange(desc(row_count))
 
   suspect_row_plot_data %>%
     tidyr::pivot_longer(cols = c(missing, present),
@@ -129,6 +136,10 @@ plot_suspect_rows <- function(suspect_data) {
 # plot_suspect_rows(suspect_data)
 
 plot_suspect_columns <- function(suspect_data) {
+  type <- data <- column_name <- row_count <- missing_elements <- NULL
+  present_elements <- present <- rows <- missingness <- reason <- NULL
+
+
   axis_expansion <- 2
 
   suspect_column_plot_data <-
@@ -187,6 +198,9 @@ plot_suspect_columns <- function(suspect_data) {
 
 
 plot_suspect_missingness <- function(adjudicated_ds) {
+
+  dataset <- elements <- missingness <- NULL
+
   synopsis <- list()
 
   synopsis$original$missing <- adjudicated_ds$original_na_count

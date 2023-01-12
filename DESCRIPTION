@@ -1,5 +1,5 @@
 Package: inquisitive
-Title: A collection of exploratory data analysis functions used to identify, quantify, and visualize data quality issues.
+Title: A collection of exploratory data analysis functions used to identify, quantify, and visualize data quality issues
 Version: 0.0.1
 Authors@R: 
     person("John", "Clouse", , "john@clouse.io", role = c("aut", "cre"),
@@ -10,9 +10,12 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Imports: 
+    forcats,
     ggplot2,
     ggtext,
+    glue,
     magrittr,
+    patchwork,
     purrr,
     rlang,
     scales,

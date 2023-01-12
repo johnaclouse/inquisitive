@@ -4,12 +4,12 @@
 \name{inquisitive-package}
 \alias{inquisitive}
 \alias{inquisitive-package}
-\title{inquisitive: What the Package Does (One Line, Title Case)}
+\title{inquisitive: A collection of exploratory data analysis functions used to identify, quantify, and visualize data quality issues}
 \description{
-What the package does (one paragraph).
+This package curates a set of data analysis functions focused on profiling data for machine learning and providing feedback to upstream business process and data owners to facilitate the improvement of data quality and completeness.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: John Clouse \email{john@clouse.io} (\href{https://orcid.org/0000-0002-0369-2116}{ORCID})
 
 }
 \keyword{internal}

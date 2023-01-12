@@ -32,13 +32,4 @@ suspect_data <-
   filter(cut == "Fair") \%>\%
   add_suspected_rows(reason = "Cut was not good or better")
 
-suspect_data <-
-  df \%>\%
-  filter(price < 5000) \%>\%
-  add_suspected_rows(reason = "Price was less than 5000", suspect_data)
-
-suspect_data <-
-  df \%>\%
-  filter(table < 57) \%>\%
-  add_suspected_rows(reason = "Table was less than 57", suspect_data)
 }
