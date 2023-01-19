@@ -43,9 +43,6 @@ plot_suspect_rows <- function(suspect_data) {
           legend.position = "none",
           axis.title.x.bottom = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
           axis.title.y.right = element_text(margin = margin(t = 0, r = 0, b = 0, l = 10))
-
-          # legend.position = "none",
-          # axis.title.y = element_blank()
     )
 }
 # plot_suspect_rows(suspect_data)
@@ -106,7 +103,6 @@ plot_suspect_columns <- function(suspect_data) {
     theme(aspect.ratio = 1,
           legend.position = "none",
           axis.text.x = element_text(angle = 60, hjust = 0.)
-          # axis.title.y = element_blank()
     )
 }
 # plot_suspect_columns(suspect_data)
@@ -307,6 +303,6 @@ plot_suspect_data <- function(suspect_ds, adjudicated_ds) {
                              left = 0.25,
                              bottom = 0,
                              right = 1.1,
-                             top = 3.2) +
-    patchwork::plot_layout(guides = "collect")
+                             top = 3.2)
+    # patchwork::plot_layout(guides = "collect")
 }
