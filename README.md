@@ -17,12 +17,17 @@ You can install the development version of inquisitive from [GitHub](https://git
 devtools::install_github("johnaclouse/inquisitive")
 ```
 
-## Example
+## Work flow
 
-This is a basic example which shows you how to solve a common problem:
+* Capture the starting point
+  + The original tibble is used to calculate the impact of the suspected data
+  + Do not change the original tibble until finished identifying suspect rows and columns
+* Add suspect rows using [add_suspected_rows()](man/add_suspected_columns.Rd)
+* Add suspect columns using add_suspected_columns()
+* Plot the results using plot_suspect_data()
+* Adjusticate the original tibble
+  + Apply the function to the original tibble to remove all of the suspect data using 
+  
 
-``` r
-library(inquisitive)
-## basic example code
-```
+
 
