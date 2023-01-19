@@ -1,3 +1,5 @@
+# inquisitive 0.0.3
+
 # inquisitive 0.0.2
 
 * Bug fixes and appeasements to R CMD check
