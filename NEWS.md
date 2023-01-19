@@ -1,5 +1,7 @@
 # inquisitive 0.0.3
 
+* Updateds to adjudicate_suspecte_data and plot_suspect_data documentation
+
 # inquisitive 0.0.2
 
 * Bug fixes and appeasements to R CMD check
