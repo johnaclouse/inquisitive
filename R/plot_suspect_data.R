@@ -2,7 +2,7 @@ plot_suspect_rows <- function(suspect_data) {
   type <- data <- row_count <- missing_elements <- present_elements <- NULL
   reason <- present <- rows <- missingness <-
 
-  axis_expansion <- 2
+    axis_expansion <- 2
 
   suspect_row_plot_data <-
     suspect_data %>%
@@ -43,6 +43,9 @@ plot_suspect_rows <- function(suspect_data) {
           legend.position = "none",
           axis.title.x.bottom = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
           axis.title.y.right = element_text(margin = margin(t = 0, r = 0, b = 0, l = 10))
+
+          # legend.position = "none",
+          # axis.title.y = element_blank()
     )
 }
 # plot_suspect_rows(suspect_data)
@@ -80,17 +83,29 @@ plot_suspect_columns <- function(suspect_data) {
                         names_to = "missingness",
                         values_to = "rows") %>%
     ggplot() +
-    geom_col(aes(x = column_name, y = rows, fill = missingness)) +
-    ggtext::geom_richtext(aes(x = column_name, y = 1, label = reason),
-              angle = 90,
-              hjust = 0,
-              vjust = 0.5,
-              nudge_y = 0.01 * max(suspect_column_plot_data$row_count, na.rm = TRUE),
-              size = 3,
-              color = "black",
-              fill = "white") +
-    scale_x_discrete(expand = expansion(add = c(axis_expansion, 0)),
-                     position = "top") +
+    geom_col(aes(x = as.numeric(column_name), y = rows, fill = missingness)) +
+    # ggtext::geom_richtext(aes(x = column_name, y = 1, label = reason),
+    #                       angle = 90,
+    #                       hjust = 0,
+    #                       vjust = 0.5,
+    #                       nudge_y = 0.01 * max(suspect_column_plot_data$row_count, na.rm = TRUE),
+    #                       size = 3,
+    #                       color = "black",
+    #                       fill = "white") +
+
+
+    # scale_x_discrete(expand = expansion(add = c(axis_expansion, 0)),
+  #                  position = "top"
+  #                  ) +
+
+  scale_x_continuous(expand = expansion(add = c(axis_expansion, 0)),
+                     position = "top",
+                     breaks = unique(as.numeric(suspect_column_plot_data$column_name)),
+                     labels = unique(suspect_column_plot_data$column_name),
+                     sec.axis = dup_axis(
+                       labels = suspect_column_plot_data$reason)
+  ) +
+
     ggplot2::scale_fill_manual(
       values = c("missing" = "#FFEA46",
                  "present" =  "#575C6D")
@@ -102,7 +117,8 @@ plot_suspect_columns <- function(suspect_data) {
     theme_minimal() +
     theme(aspect.ratio = 1,
           legend.position = "none",
-          axis.text.x = element_text(angle = 60, hjust = 0.)
+          axis.text.x.top = element_text(angle = 45, hjust = 0, vjust = 0),
+          axis.text.x.bottom = element_text(angle = 90, vjust = 0.5)
     )
 }
 # plot_suspect_columns(suspect_data)
@@ -146,7 +162,7 @@ plot_suspect_missingness <- function(adjudicated_ds) {
     ) +
 
     labs(
-      x = "Data at each stage of the pipeline",
+      x = "Missingness by pipeline stage",
       y = "Count of data elements") +
     theme_minimal() +
     theme(aspect.ratio = 1,
@@ -163,8 +179,8 @@ plot_suspect_missingness <- function(adjudicated_ds) {
           # legend.margin = margin(3, .5, .5, .5, "lines"),
           # legend.key.height = unit(1, "lines")
           axis.text.x = element_text(angle = 60, hjust = 0),
-          axis.title.x.top = element_text(margin = margin(t = 0, r = 0, b = 10, l = 0)),
-          axis.title.y.right = element_text(margin = margin(t = 0, r = 0, b = 0, l = 10))
+          axis.title.x.top = element_text(size = rel(0.8), margin = margin(t = 0, r = 0, b = 10, l = 0)),
+          axis.title.y.right = element_text(size = rel(0.8), margin = margin(t = 0, r = 0, b = 0, l = 10))
           # axis.text.x = element_text(angle = 60, hjust = 0.)
           # axis.title.y = element_blank()
     )
@@ -304,5 +320,5 @@ plot_suspect_data <- function(suspect_ds, adjudicated_ds) {
                              bottom = 0,
                              right = 1.1,
                              top = 3.2)
-    # patchwork::plot_layout(guides = "collect")
+  # patchwork::plot_layout(guides = "collect")
 }
