@@ -1,5 +1,7 @@
 # inquisitive 0.0.4
 
+* Moved the reason label from the body of the columns removed graph to a secondary x-asis to improve visibility of missing and present in the stacked chart.
+
 # inquisitive 0.0.3
 
 * Updateds to adjudicate_suspect_data and plot_suspect_data documentation
