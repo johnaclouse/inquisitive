@@ -1,3 +1,5 @@
+# inquisitive 0.0.4
+
 # inquisitive 0.0.3
 
 * Updateds to adjudicate_suspect_data and plot_suspect_data documentation
