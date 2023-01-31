@@ -1,5 +1,7 @@
 # inquisitive 0.0.5
 
+* Fixed bug where geom_raster is unable to handle more than 32,667 rows on some systems.
+
 # inquisitive 0.0.4
 
 * Moved the reason label from the body of the columns removed graph to a secondary x-asis to improve visibility of missing and present in the stacked chart.
