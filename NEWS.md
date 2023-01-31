@@ -1,3 +1,5 @@
+# inquisitive 0.0.5
+
 # inquisitive 0.0.4
 
 * Moved the reason label from the body of the columns removed graph to a secondary x-asis to improve visibility of missing and present in the stacked chart.
