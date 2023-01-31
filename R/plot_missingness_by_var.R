@@ -62,14 +62,6 @@ plot_missingness_by_var <- function(ds,
   if (inherits(ds$x_axis_label, "Date"))
     x_axis_labels$x_axis_label <- date_format_fun(x_axis_labels$x_axis_label)
 
-  # column_order <-
-  #   purrr::map_df(ds, ~ sum(is.na(.))) %>%
-  #   tidyr::pivot_longer(cols = everything(),
-  #                       names_to = "column",
-  #                       values_to = "count") %>%
-  #   arrange(count) %>%
-  #   pull(column)
-
   plot_data <-
     ds %>%
     tidyr::pivot_longer(cols = -c(
@@ -83,16 +75,11 @@ plot_missingness_by_var <- function(ds,
          aes(x = row_identifier,
              y = name,
              fill = value)) +
-    geom_raster() +
+    geom_tile() +
     scale_x_continuous(
-      # limits = 1:10,
-      expand = c(0.01, 0.01),
+      expand = c(0, 0),
       breaks = x_axis_labels$row_identifier,
       labels = x_axis_labels$x_axis_label) +
-    # ggplot2::scale_fill_manual(name = "",
-    #                            values = c("missing" = "black",
-    #                                       "present" =  "gray95")
-    # ) +
     ggplot2::scale_fill_manual(name = "Data elements",
                                values = c("missing" = "#FFEA46",
                                           "present" =  "#575C6D")
