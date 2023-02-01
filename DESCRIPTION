@@ -1,6 +1,6 @@
 Package: inquisitive
 Title: A collection of exploratory data analysis functions used to identify, quantify, and visualize data quality issues
-Version: 0.0.5
+Version: 0.1.0
 Authors@R: 
     person("John", "Clouse", , "john@clouse.io", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0369-2116"))

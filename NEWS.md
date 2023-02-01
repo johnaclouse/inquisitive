@@ -1,3 +1,5 @@
+# inquisitive 0.1.0
+
 # inquisitive 0.0.5
 
 * Fixed bug where geom_raster is unable to handle more than 32,667 rows on some systems.
