@@ -275,7 +275,7 @@ plot_suspect_area <- function(adjudicated_ds){
 #' @param suspect_ds a suspect_data object
 #' @param adjudicated_ds an adjudicated data object
 #'
-#' @return
+#' @return ggplot object
 #' @export
 #'
 #' @examples

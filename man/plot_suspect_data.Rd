@@ -11,6 +11,9 @@ plot_suspect_data(suspect_ds, adjudicated_ds)
 
 \item{adjudicated_ds}{an adjudicated data object}
 }
+\value{
+ggplot object
+}
 \description{
 Plot the effects of removing suspected data against the original data set
 }

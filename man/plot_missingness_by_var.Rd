@@ -24,12 +24,18 @@ for the x axis}
 \item{date_format_fun}{a function specifying the formatting of of the x axis
 when the column selected is of type Date.}
 }
+\value{
+ggplot object
+}
 \description{
 Build a ggplot depicting missingness in a data frame. The data is first
 turned into a lithographic copy of the frame with only 'missing' or 'present'
 by \code{\link{as_lith_tbl}}.
 }
 \details{
+If the data set contains more than 5,000 rows, the data will be aggregated
+and the percentage of missing data per aggregated element will be reported.
+
 If a reference column is specified, the data frame will be sorted by the
 reference column prior to plotting
 }

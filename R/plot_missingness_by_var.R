@@ -17,7 +17,7 @@
 #' @param date_format_fun a function specifying the formatting of of the x axis
 #'   when the column selected is of type Date.
 #'
-#' @return
+#' @return ggplot object
 #' @export
 #'
 #' @examples
@@ -62,7 +62,7 @@ plot_missingness_by_var <- function(ds,
 
   ds <-
     ds %>%
-    mutate(across(where(is.factor), ~ if_else(. == "present", 0, 1)))
+    mutate(across(tidyselect::where(is.factor), ~ if_else(. == "present", 0, 1)))
 
   if (nrow(ds) > 5000) {
     observations_per_element <-  ceiling(nrow(ds) / 5000)
