@@ -4,6 +4,9 @@
 #' turned into a lithographic copy of the frame with only 'missing' or 'present'
 #' by \code{\link{as_lith_tbl}}.
 #'
+#' If the data set contains more than 5,000 rows, the data will be aggregated
+#' and the percentage of missing data per aggregated element will be reported.
+#'
 #' If a reference column is specified, the data frame will be sorted by the
 #' reference column prior to plotting
 #'
@@ -28,7 +31,11 @@ plot_missingness_by_var <- function(ds,
                                     reference_column = NULL,
                                     number_of_axis_lables = 25,
                                     date_format_fun = function(x) {format(x, "%Y-%m")}) {
-  . <- column <- row_identifier <- name <- value <- x_axis_label <- NULL
+
+  . <- column <- row_identifier <- name <- value <- NULL
+
+  number_of_axis_lables <- pmin(number_of_axis_lables,
+                                nrow(ds))
 
   column_order <-
     purrr::map_df(ds, ~ sum(is.na(.))) %>%
@@ -38,66 +45,92 @@ plot_missingness_by_var <- function(ds,
     arrange(count) %>%
     pull(column)
 
-  ds <- as_lith_tbl(ds, {{reference_column}})
+  ds <- as_lith_tbl(ds, {
+    {
+      reference_column
+    }
+  })
 
   subject_label <- (rlang::enexpr(reference_column))
 
-  if (is.null(subject_label)) subject_label <- "row identifier"
+  if (is.null(subject_label)) {
+    subject_label <- "row identifier"
+  } else {
+    ds <- ds %>%
+      select(-{{subject_label}})
+  }
 
-  ds <- ds %>%
-    arrange(reference_column) %>%
-    mutate(
-      row_identifier = row_number(),
-      x_axis_label = reference_column
-    )
+  ds <-
+    ds %>%
+    mutate(across(where(is.factor), ~ if_else(. == "present", 0, 1)))
+
+  if (nrow(ds) > 5000) {
+    observations_per_element <-  ceiling(nrow(ds) / 5000)
+    ds <-
+      ds %>%
+      arrange(reference_column) %>%
+      group_by(row_identifier = row_number() %/% observations_per_element) %>%
+      summarize(across(everything(), mean))
+
+    caption <- glue::glue("Darker color indicates greater percentage of missing data\nEach bar represents {observations_per_element} observations")
+
+  } else {
+    ds <- ds %>%
+      arrange(reference_column) %>%
+      mutate(row_identifier = row_number())
+
+    caption <- "Dark color indicates missing data"
+  }
 
   x_axis_labels <-
     ds %>%
     # row_identifier is required here to tie labels to original data
     distinct(row_identifier,
-             x_axis_label) %>%
-    arrange(x_axis_label, row_identifier) %>%
+             reference_column) %>%
+    arrange(reference_column, row_identifier) %>%
     slice(seq(1, nrow(.), by = floor(nrow(.) / number_of_axis_lables)))
-
-  if (inherits(ds$x_axis_label, "Date"))
-    x_axis_labels$x_axis_label <- date_format_fun(x_axis_labels$x_axis_label)
 
   plot_data <-
     ds %>%
-    tidyr::pivot_longer(cols = -c(
-      row_identifier,
-      reference_column,
-      x_axis_label
-    )) %>%
+    tidyr::pivot_longer(cols = -c(row_identifier,
+                                  reference_column)) %>%
     mutate(name = factor(name, levels = column_order))
 
   ggplot(data = plot_data,
-         aes(x = row_identifier,
-             y = name,
-             fill = value)) +
-    geom_tile() +
+         aes(
+           x = row_identifier,
+           y = name,
+           fill = value
+         )) +
+    geom_raster() +
     scale_x_continuous(
-      expand = c(0, 0),
       breaks = x_axis_labels$row_identifier,
-      labels = x_axis_labels$x_axis_label) +
-    ggplot2::scale_fill_manual(name = "Data elements",
-                               values = c("missing" = "#FFEA46",
-                                          "present" =  "#575C6D")
+      labels = x_axis_labels$reference_column
     ) +
 
-
-    ggplot2::guides(fill = ggplot2::guide_legend(reverse = TRUE)) +
-    ggplot2::labs(title = paste("Missing features by", subject_label),
-                  x = subject_label,
-                  y = "") +
+    scale_fill_viridis_c(
+      option = "E",
+      direction = -1,
+      limits = c(0,1)
+    ) +
+    ggplot2::labs(
+      title = paste("Missing data in features by", quo_name(subject_label)),
+      caption = caption,
+      x = subject_label,
+      y = ""
+    ) +
     ggplot2::theme_minimal() +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45,
-                                                       vjust = 1,
-                                                       hjust = 1),
-                   legend.position = "bottom",
-                   panel.grid.minor.x = element_blank()
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(
+        angle = 45,
+        vjust = 1,
+        hjust = 1
+      ),
+      legend.position = "none",
+      panel.grid.minor.x = element_blank()
     )
 }
+
 
 
 
